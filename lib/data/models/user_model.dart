@@ -1,3 +1,5 @@
+import 'package:player2/domain/entities/user_entity.dart';
+
 class UserModel {
   final int? id;
   final String? email;
@@ -33,4 +35,19 @@ class UserModel {
 
 
   //to entity
+  UserEntity toEntity() {
+    return UserEntity(
+      id: id,
+      email: email,
+      password: password,
+      username: username,
+      description: description,
+      imageUrl: imageUrl,
+      platforms: platforms,
+      discord: discord,
+      postsIds: postsIds,
+      bday: bday,
+      userCreatedAt: userCreatedAt
+    );
+  }
 }
