@@ -7,6 +7,8 @@ import 'package:player2/domain/usecases/register_user_usecase.dart';
 import 'package:player2/presentation/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
+//PAGE
+
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
