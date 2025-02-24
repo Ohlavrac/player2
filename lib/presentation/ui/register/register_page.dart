@@ -1,11 +1,11 @@
-//PAGE
-
 import 'package:flutter/material.dart';
-import 'package:player2/domain/entities/user_entity.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
 import 'package:player2/domain/usecases/register_user_usecase.dart';
 import 'package:player2/presentation/providers/auth_provider.dart';
+import 'package:player2/presentation/ui/register/register_content_01.dart';
 import 'package:provider/provider.dart';
+
+import '../../../domain/entities/user_entity.dart';
 
 //PAGE
 
@@ -31,36 +31,29 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  int contentIndex = 0;
+  List<Widget> contents = [
+    RegisterContent01()
+  ];
+
+  UserEntity userdate = UserEntity();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                UserEntity user = UserEntity(
-                  email: "seil2a@gmail.com",
-                  password: "q2eqeddwd",
-                  username: "conta fake",
-                  description: "conta fake dosa",
-                  imageUrl: "sem foto",
-                  platforms: ["PC", "Steam", "Suvaco"],
-                  discord: "seiladiscord",
-                  postsIds: [],
-                  bday: DateTime.now(),
-                  userCreatedAt: DateTime.now()
-                );
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: contents[0],
+      ),
+      bottomSheet: ElevatedButton(
+        onPressed: () {
+          if (contentIndex == 0) {
+            
+          } else {
 
-                context.read<AuthProvider>().registerUser(user);
-
-                print("OK");
-              },
-              child: Text("Register")
-            )
-          ],
-        ),
+          }
+        },
+        child: Text("Register")
       ),
     );
   }

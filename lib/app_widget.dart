@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
-import 'package:player2/presentation/ui/register_screen.dart';
+import 'package:player2/presentation/ui/register/register_page.dart';
 import 'package:provider/provider.dart';
 
 import 'presentation/ui/main_screen.dart';
