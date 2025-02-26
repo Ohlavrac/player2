@@ -45,16 +45,7 @@ class _RegisterViewState extends State<RegisterView> {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: contents[0],
       ),
-      bottomSheet: ElevatedButton(
-        onPressed: () {
-          if (contentIndex == 0) {
-            
-          } else {
-
-          }
-        },
-        child: Text("Register")
-      ),
+      //floatingActionButton: ElevatedButton(onPressed: () {}, child: Text("Register"))
     );
   }
 }
