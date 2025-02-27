@@ -43,7 +43,7 @@ class UserProvider extends ChangeNotifier {
   void setPassword(String value) {
     if (value.length < 8) {
       passwordStatus = PasswordStatus.short;
-    } else if (value.length >= 8 && value.contains(RegExp(r'[!@#$%&*()_+=-|]'))) {
+    } else if (value.length >= 8 && value.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'))) {
       passwordStatus = PasswordStatus.valid;
     } else {
       passwordStatus = PasswordStatus.needSymble;
