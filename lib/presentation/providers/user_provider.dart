@@ -1,75 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:player2/presentation/status/email_status.dart';
+import 'package:player2/presentation/status/password_status.dart';
+import 'package:player2/presentation/status/username_status.dart';
 
 class UserProvider extends ChangeNotifier {
-  late final String _email;
-  late final String _password;
-  late final String _username;
-  late final String _description;
-  late final String _imageUrl;
-  late final List<String> _platforms;
-  late final String _discord;
-  late final List<int> _postsIds;
-  late final DateTime _bday;
-  late final DateTime _userCreatedAt;
+  String email = "";
+  String password = "";
+  String username = "";
+  String description = "";
+  String imageUrl = "";
+  List<String> platforms = [];
+  String discord = "";
+  List<int> postsIds = [];
+  DateTime bday = DateTime.now();
+  DateTime userCreatedAt = DateTime.now();
 
-  String get email => _email;
-  String get password => _password; 
-  String get username => _username; 
-  String get description => _description;
-  String get imageUrl => _imageUrl;
-  List<String> get platforms => _platforms;
-  String get discord => _discord;
-  List<int> get postsIds => _postsIds;
-  DateTime get bday => _bday;
-  DateTime get userCreatedAt => _userCreatedAt;
+  UsernameStatus usernameStatus = UsernameStatus.unknow;
+  EmailStatus emailStatus = EmailStatus.unknow;
+  PasswordStatus passwordStatus = PasswordStatus.unknow;
+
+  String get getemail => email;
+  String get getpassword => password; 
+  String get getusername => username; 
+  String get getdescription => description;
+  String get getimageUrl => imageUrl;
+  List<String> get getplatforms => platforms;
+  String get getdiscord => discord;
+  List<int> get getpostsIds => postsIds;
+  DateTime get getbday => bday;
+  DateTime get getuserCreatedAt => userCreatedAt;
 
   void setEmail(String value) {
-    _email = value;
+    if (value.contains(RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com(\.br)?$'))) {
+      emailStatus = EmailStatus.valid;
+      email = value;
+    } else {
+      emailStatus = EmailStatus.invalid;
+    }
     notifyListeners();
   }
 
   void setPassword(String value) {
-    _password = value;
+    if (value.length < 8) {
+      passwordStatus = PasswordStatus.short;
+    } else if (value.length >= 8 && value.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'))) {
+      passwordStatus = PasswordStatus.valid;
+      password = value;
+    } else {
+      passwordStatus = PasswordStatus.needSymble;
+    }
     notifyListeners();
   }
 
   void setUsername(String value) {
-    _username = value;
+    if (value.length < 3) {
+      usernameStatus = UsernameStatus.invalid;
+    } else if (value.isEmpty || value == "") {
+      usernameStatus = UsernameStatus.unknow;
+    } else {
+      usernameStatus = UsernameStatus.valid;
+      username = value;
+    }
     notifyListeners();
   }
 
   void setDescription(String value) {
-    _description = value;
+    description = value;
     notifyListeners();
   }
 
   void setImageUrl(String value) {
-    _imageUrl = value;
+    imageUrl = value;
     notifyListeners();
   }
 
   void setPlatforms(List<String> value) {
-    _platforms = value;
+    platforms = value;
     notifyListeners();
   }
 
   void setDiscord(String value) {
-    _discord = value;
+    discord = value;
     notifyListeners();
   }
 
   void setPostsIds(List<int> value) {
-    _postsIds = value;
+    postsIds = value;
     notifyListeners();
   }
 
   void setBday(DateTime value) {
-    _bday = value;
+    bday = value;
     notifyListeners();
   }
 
   void setUserCreatedAt(DateTime value) {
-    _userCreatedAt = value;
+    userCreatedAt = value;
     notifyListeners();
   }
 }
