@@ -1,2 +1,0 @@
-C:/Users/VeraCarvalho/Documents/codes/git/player2/android/app/.cxx/Debug/221o6863/x86_64/CMakeFiles/edit_cache.dir
-C:/Users/VeraCarvalho/Documents/codes/git/player2/android/app/.cxx/Debug/221o6863/x86_64/CMakeFiles/rebuild_cache.dir
