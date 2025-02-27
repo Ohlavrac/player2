@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
+import 'package:player2/presentation/status/email_status.dart';
+import 'package:player2/presentation/status/username_status.dart';
 import 'package:provider/provider.dart';
+
+import '../../status/password_status.dart';
 
 class RegisterContent01 extends StatefulWidget {
   const RegisterContent01({super.key});
@@ -72,6 +76,14 @@ class _RegisterContent01State extends State<RegisterContent01> {
             ),
             TextFormField(
               controller: _usernameController,
+              onChanged: (value) {
+                setState(() {
+                  
+                });
+              },
+              decoration: InputDecoration(
+                errorText: context.read<UserProvider>().usernameStatus == UsernameStatus.invalid ? "Username Invalid" : null
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 3),
@@ -79,6 +91,14 @@ class _RegisterContent01State extends State<RegisterContent01> {
             ),
             TextFormField(
               controller: _emailController,
+              onChanged: (value) {
+                setState(() {
+                  
+                });
+              },
+              decoration: InputDecoration(
+                errorText: context.read<UserProvider>().emailStatus == EmailStatus.invalid ? "Email Invalid" : null
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 3),
@@ -86,6 +106,16 @@ class _RegisterContent01State extends State<RegisterContent01> {
             ),
             TextFormField(
               controller: _passwordController,
+              onChanged: (value) {
+                setState(() {
+                  
+                });
+              },
+              decoration: InputDecoration(
+                errorText: context.read<UserProvider>().passwordStatus == PasswordStatus.needSymble ? "Password invalid: Need a symble" :
+                context.read<UserProvider>().passwordStatus == PasswordStatus.short ? "Password invalid: Need more chars" : 
+                null
+              ),
             ),
             SizedBox(height: 30,),
             Center(child: ElevatedButton(
