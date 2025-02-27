@@ -120,7 +120,15 @@ class _RegisterContent01State extends State<RegisterContent01> {
             SizedBox(height: 30,),
             Center(child: ElevatedButton(
                 onPressed: () {
-                  print(context.read<UserProvider>().getusername);
+                  if (context.read<UserProvider>().usernameStatus == UsernameStatus.valid && 
+                      context.read<UserProvider>().emailStatus == EmailStatus.valid &&
+                      context.read<UserProvider>().passwordStatus == PasswordStatus.valid) {
+                    print("TUDO OK");
+                    print("${context.read<UserProvider>().getusername} | ${context.read<UserProvider>().getemail} | ${context.read<UserProvider>().getpassword}");
+                  } else {
+                    print("PERA LA CAMARAD");
+                    print("${context.read<UserProvider>().getusername} | ${context.read<UserProvider>().getemail} | ${context.read<UserProvider>().getpassword}");
+                  }
                 },
                 child: Text("Register")
               )
