@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/username_status.dart';
+import 'package:player2/presentation/widgets/text_input_v1_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../status/password_status.dart';
@@ -74,49 +75,51 @@ class _RegisterContent01State extends State<RegisterContent01> {
               padding: const EdgeInsets.only(top: 10, bottom: 3),
               child: Text("Username"),
             ),
-            TextFormField(
-              controller: _usernameController,
+            TextInputV1Widget(
+              textController: _usernameController,
+              isEmailInput: false,
+              isPasswordInput: false,
               onChanged: (value) {
                 setState(() {
                   
                 });
               },
-              decoration: InputDecoration(
-                errorText: context.read<UserProvider>().usernameStatus == UsernameStatus.invalid ? "Username Invalid" : null
-              ),
+              erroText: context.read<UserProvider>().usernameStatus == UsernameStatus.invalid ? "Username Invalid" : null,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 3),
               child: Text("Email"),
             ),
-            TextFormField(
-              controller: _emailController,
+            TextInputV1Widget(
+              textController: _emailController,
+              isEmailInput: true,
+              isPasswordInput: false,
               onChanged: (value) {
                 setState(() {
                   
                 });
               },
-              decoration: InputDecoration(
-                errorText: context.read<UserProvider>().emailStatus == EmailStatus.invalid ? "Email Invalid" : null
-              ),
+              erroText: context.read<UserProvider>().emailStatus == EmailStatus.invalid ? "Email Invalid" : null
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 3),
               child: Text("Password"),
             ),
-            TextFormField(
-              controller: _passwordController,
+            TextInputV1Widget(
+              textController: _passwordController,
+              isEmailInput: false,
+              isPasswordInput: true,
               onChanged: (value) {
                 setState(() {
                   
                 });
               },
-              decoration: InputDecoration(
-                errorText: context.read<UserProvider>().passwordStatus == PasswordStatus.needSymble ? "Password invalid: Need a symble" :
+              erroText: context.read<UserProvider>().passwordStatus == PasswordStatus.needSymble ? "Password invalid: Need a symble" :
                 context.read<UserProvider>().passwordStatus == PasswordStatus.short ? "Password invalid: Need more chars" : 
                 null
-              ),
             ),
+            Text("Born Day"),
+            OutlinedButton(onPressed: () {}, child: Text("Date")),
             SizedBox(height: 30,),
             Center(child: ElevatedButton(
                 onPressed: () {
