@@ -45,9 +45,9 @@ class UserProvider extends ChangeNotifier {
       passwordStatus = PasswordStatus.short;
     } else if (value.length >= 8 && value.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'))) {
       passwordStatus = PasswordStatus.valid;
+      password = value;
     } else {
       passwordStatus = PasswordStatus.needSymble;
-      password = value;
     }
     notifyListeners();
   }
