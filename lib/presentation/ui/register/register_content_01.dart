@@ -123,21 +123,28 @@ class _RegisterContent01State extends State<RegisterContent01> {
                   if (context.read<UserProvider>().usernameStatus == UsernameStatus.valid && 
                       context.read<UserProvider>().emailStatus == EmailStatus.valid &&
                       context.read<UserProvider>().passwordStatus == PasswordStatus.valid) {
-                    print("TUDO OK");
-                    print("${context.read<UserProvider>().getusername} | ${context.read<UserProvider>().getemail} | ${context.read<UserProvider>().getpassword}");
+                    Navigator.pushNamed(context, "/register/informations");
                   } else {
                     print("PERA LA CAMARAD");
                     print("${context.read<UserProvider>().getusername} | ${context.read<UserProvider>().getemail} | ${context.read<UserProvider>().getpassword}");
                   }
                 },
-                child: Text("Register")
+                style: ElevatedButton.styleFrom(
+                  elevation: 1,
+                  backgroundColor: Color(0xff23211F),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2)
+                  ),
+                  textStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)
+                ),
+                child: Text("Register", style: TextStyle(color: Colors.white),)
               )
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already hava account ?"),
-                TextButton(onPressed: () {}, child: Text("Login"))
+                Text("Already hava account ?", style: TextStyle(fontSize: 16),),
+                TextButton(onPressed: () {}, child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),))
               ],
             ),
           ]
