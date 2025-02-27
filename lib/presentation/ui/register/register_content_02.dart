@@ -7,7 +7,10 @@ class RegisterContent02 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Salve Salve Familia")
+        Text("Description"),
+        TextFormField(),
+        Text("Discord"),
+        TextFormField()
       ],
     );
   }
