@@ -1,0 +1,1 @@
+enum EmailStatus {unknow, valid, invalid}

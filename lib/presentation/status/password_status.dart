@@ -1,0 +1,1 @@
+enum PasswordStatus {unknow, valid, needSymble, short}
