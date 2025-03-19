@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:player2/presentation/status/bday_status.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/password_status.dart';
 import 'package:player2/presentation/status/username_status.dart';
@@ -18,6 +19,7 @@ class UserProvider extends ChangeNotifier {
   UsernameStatus usernameStatus = UsernameStatus.unknow;
   EmailStatus emailStatus = EmailStatus.unknow;
   PasswordStatus passwordStatus = PasswordStatus.unknow;
+  BdayStatus bdayStatus = BdayStatus.unknow;
 
   String get getemail => email;
   String get getpassword => password; 
@@ -90,7 +92,15 @@ class UserProvider extends ChangeNotifier {
   }
 
   void setBday(DateTime value) {
-    bday = value;
+    int currentAge = DateTime.now().year - value.year;
+
+    if (value == null || currentAge < 18) {
+      bdayStatus = BdayStatus.invalid;
+    } else {
+      bday = value;
+      bdayStatus = BdayStatus.valid;
+    }
+    print(bdayStatus);
     notifyListeners();
   }
 

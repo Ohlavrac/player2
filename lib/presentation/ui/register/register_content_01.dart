@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
+import 'package:player2/presentation/status/bday_status.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/username_status.dart';
 import 'package:player2/presentation/widgets/text_input_v1_widget.dart';
@@ -57,6 +58,20 @@ class _RegisterContent01State extends State<RegisterContent01> {
     _emailController?.dispose();
     _passwordController?.dispose();
     super.dispose();
+  }
+
+  DateTime? selectedDate;
+  Future<void> _selectDate() async {
+    final DateTime? pickDate = await showDatePicker(
+      context: context,
+      firstDate: DateTime(DateTime.now().year-100), 
+      lastDate: DateTime.now()
+    );
+
+    setState(() {
+      selectedDate = pickDate;
+      context.read<UserProvider>().setBday(pickDate!);
+    });
   }
 
   @override
@@ -118,14 +133,29 @@ class _RegisterContent01State extends State<RegisterContent01> {
                 context.read<UserProvider>().passwordStatus == PasswordStatus.short ? "Password invalid: Need more chars" : 
                 null
             ),
-            Text("Born Day"),
-            OutlinedButton(onPressed: () {}, child: Text("Date")),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text("Born Day"),
+            ),
+            OutlinedButton(
+              onPressed: _selectDate,
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                //backgroundColor: context.read<UserProvider>().bdayStatus == BdayStatus.invalid ? Colors.red : Colors.blue 
+              ),
+              child: Text(selectedDate == null ? "Date" : "${selectedDate!.month}/${selectedDate!.day}/${selectedDate!.year}")
+            ),
+            context.read<UserProvider>().bdayStatus == BdayStatus.invalid ? Text("Idade invalida", style: TextStyle(color: Colors.red, fontSize: 14),) : Container(),
             SizedBox(height: 30,),
             Center(child: ElevatedButton(
                 onPressed: () {
                   if (context.read<UserProvider>().usernameStatus == UsernameStatus.valid && 
                       context.read<UserProvider>().emailStatus == EmailStatus.valid &&
-                      context.read<UserProvider>().passwordStatus == PasswordStatus.valid) {
+                      context.read<UserProvider>().passwordStatus == PasswordStatus.valid &&
+                      context.read<UserProvider>().bdayStatus == BdayStatus.valid) {
                     Navigator.pushNamed(context, "/register/informations");
                   } else {
                     print("PERA LA CAMARAD");
