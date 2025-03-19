@@ -3,6 +3,7 @@ import 'package:player2/presentation/providers/user_provider.dart';
 import 'package:player2/presentation/status/bday_status.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/username_status.dart';
+import 'package:player2/presentation/widgets/elevated_button_widget.dart';
 import 'package:player2/presentation/widgets/text_input_v1_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -150,28 +151,20 @@ class _RegisterContent01State extends State<RegisterContent01> {
             ),
             context.read<UserProvider>().bdayStatus == BdayStatus.invalid ? Text("Idade invalida", style: TextStyle(color: Colors.red, fontSize: 14),) : Container(),
             SizedBox(height: 30,),
-            Center(child: ElevatedButton(
-                onPressed: () {
-                  if (context.read<UserProvider>().usernameStatus == UsernameStatus.valid && 
-                      context.read<UserProvider>().emailStatus == EmailStatus.valid &&
-                      context.read<UserProvider>().passwordStatus == PasswordStatus.valid &&
-                      context.read<UserProvider>().bdayStatus == BdayStatus.valid) {
-                    Navigator.pushNamed(context, "/register/informations");
-                  } else {
-                    print("PERA LA CAMARAD");
-                    print("${context.read<UserProvider>().getusername} | ${context.read<UserProvider>().getemail} | ${context.read<UserProvider>().getpassword}");
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 1,
-                  backgroundColor: Color(0xff23211F),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2)
-                  ),
-                  textStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)
-                ),
-                child: Text("Register", style: TextStyle(color: Colors.white),)
-              )
+            Center(child: ElevatedButtonWidget(
+              onPressed: () {
+                if (context.read<UserProvider>().usernameStatus == UsernameStatus.valid && 
+                    context.read<UserProvider>().emailStatus == EmailStatus.valid &&
+                    context.read<UserProvider>().passwordStatus == PasswordStatus.valid &&
+                    context.read<UserProvider>().bdayStatus == BdayStatus.valid) {
+                  Navigator.pushNamed(context, "/register/informations");
+                } else {
+                  print("PERA LA CAMARAD");
+                  print("${context.read<UserProvider>().getusername} | ${context.read<UserProvider>().getemail} | ${context.read<UserProvider>().getpassword}");
+                }
+              }, 
+              child: Text("Register", style: TextStyle(color: Colors.white),)
+            )
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

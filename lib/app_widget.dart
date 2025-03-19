@@ -21,7 +21,7 @@ class AppWidget extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserProvider(),),
       ],
       child: MaterialApp(
-        initialRoute: "/register",
+        initialRoute: "/register/informations",
         routes: {
           "/": (context) => MainScreen(),
           "/register": (context) => RegisterPage(),
