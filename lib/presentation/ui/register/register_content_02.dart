@@ -1,16 +1,119 @@
 import 'package:flutter/material.dart';
+import 'package:player2/presentation/widgets/elevated_button_widget.dart';
+import 'package:player2/presentation/widgets/text_input_v1_widget.dart';
+import 'package:provider/provider.dart';
 
-class RegisterContent02 extends StatelessWidget {
+import '../../providers/user_provider.dart';
+
+class RegisterContent02 extends StatefulWidget {
   const RegisterContent02({super.key});
 
   @override
+  State<RegisterContent02> createState() => _RegisterContent02State();
+}
+
+class _RegisterContent02State extends State<RegisterContent02> {
+
+  TextEditingController? _descriptionController;
+  TextEditingController? _discordController;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var providerss = Provider.of<UserProvider>(context, listen: false);
+
+      _descriptionController = TextEditingController(text: providerss.description);
+      _discordController = TextEditingController(text: providerss.discord);
+
+      _descriptionController?.addListener(() {
+        final text = _descriptionController == null ? "" : _descriptionController!.text;
+        providerss.setUsername(text);
+      });
+
+      _discordController?.addListener(() {
+        final text = _discordController == null ? "" : _discordController!.text;
+        providerss.setEmail(text);
+      });
+
+      setState(() {
+        
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _descriptionController?.dispose();
+    _discordController?.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
+
+    List<String> plataformsTitles = [
+      "Computer",
+      "PS3",
+      "PS4",
+      "PS5",
+      "X360"
+      "XONE",
+      "XONE-S",
+      "Switch"
+    ];
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Description"),
-        TextFormField(),
-        Text("Discord"),
-        TextFormField()
+        Text("More About", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
+        Text("You", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
+        SizedBox(height: 20,),
+        Text("Your account is close to be created, after that please, tell more about you.", style: TextStyle(fontSize: 16),),
+          Divider(color: Colors.black, thickness: 2,),
+        Text("Description:"),
+        TextInputV1Widget(
+          textController: _descriptionController, 
+          isPasswordInput: false, 
+          isEmailInput: false,
+          maxLines: 5,
+        ),
+        Text("Discord:"),
+        TextInputV1Widget(
+          textController: _discordController, 
+          isPasswordInput: false, 
+          isEmailInput: false
+        ),
+        Text("Plataforms:"),
+        Text("Select one or more plataforms do you use to play."),
+        SizedBox(height: 10,),
+        Expanded(
+          child: GridView.builder(
+            itemCount: plataformsTitles.length,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
+              childAspectRatio: 4
+            ), 
+            itemBuilder: (context, index) {
+              return OutlinedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black
+                ),
+                child: Text(plataformsTitles[index])
+              );
+            }),
+        ),
+        Center(
+          child: ElevatedButtonWidget(
+            onPressed: () {}, 
+            child: Text("Create account", style: TextStyle(color: Colors.white),)
+          ),
+        ),
       ],
     );
   }

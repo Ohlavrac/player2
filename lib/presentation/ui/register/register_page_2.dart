@@ -29,7 +29,8 @@ class _RegisterPage2ViewState extends State<RegisterPage2View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: RegisterContent02(),
       ),
     );
