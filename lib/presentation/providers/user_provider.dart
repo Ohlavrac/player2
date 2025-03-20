@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:player2/presentation/status/bday_status.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/password_status.dart';
+import 'package:player2/presentation/status/plataforms_status.dart';
 import 'package:player2/presentation/status/username_status.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -20,6 +21,7 @@ class UserProvider extends ChangeNotifier {
   EmailStatus emailStatus = EmailStatus.unknow;
   PasswordStatus passwordStatus = PasswordStatus.unknow;
   BdayStatus bdayStatus = BdayStatus.unknow;
+  PlataformsStatus plataformsStatus = PlataformsStatus.unknow;
 
   String get getemail => email;
   String get getpassword => password; 
@@ -76,8 +78,22 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPlatforms(List<String> value) {
-    platforms = value;
+  void setPlatforms(Map<String, dynamic> value) {
+    
+    if (value.containsValue(true)) {
+      platforms.clear();
+      value.forEach((key, value) {
+        if (value == true && !platforms.contains(key)) {
+          platforms.add(key);
+        }
+      });
+      plataformsStatus = PlataformsStatus.valid;
+    } else {
+      print("EPA");
+      plataformsStatus = PlataformsStatus.invalid;
+    }
+
+
     notifyListeners();
   }
 
