@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:player2/presentation/status/plataforms_status.dart';
 import 'package:player2/presentation/widgets/elevated_button_widget.dart';
 import 'package:player2/presentation/widgets/text_input_v1_widget.dart';
 import 'package:provider/provider.dart';
@@ -73,20 +74,28 @@ class _RegisterContent02State extends State<RegisterContent02> {
         Text("Your account is close to be created, after that please, tell more about you.", style: TextStyle(fontSize: 16),),
           Divider(color: Colors.black, thickness: 2,),
         Text("Description:"),
-        TextInputV1Widget(
-          textController: _descriptionController, 
-          isPasswordInput: false, 
-          isEmailInput: false,
-          maxLines: 5,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: TextInputV1Widget(
+            textController: _descriptionController, 
+            isPasswordInput: false, 
+            isEmailInput: false,
+            maxLines: 5,
+          ),
         ),
         Text("Discord:"),
-        TextInputV1Widget(
-          textController: _discordController, 
-          isPasswordInput: false, 
-          isEmailInput: false
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: TextInputV1Widget(
+            textController: _discordController, 
+            isPasswordInput: false, 
+            isEmailInput: false
+          ),
         ),
         Text("Plataforms:"),
-        Text("Select one or more plataforms do you use to play."),
+
+        context.read<UserProvider>().plataformsStatus == PlataformsStatus.invalid ? Text("Select one or more plataforms do you use to play.", style: TextStyle(color: Colors.red),) : Container(),
+        
         SizedBox(height: 10,),
         Expanded(
           child: GridView.builder(
@@ -108,6 +117,8 @@ class _RegisterContent02State extends State<RegisterContent02> {
                       plataformsMap[plataformsMap.keys.elementAt(index)] = true;
                     }
                   });
+
+                  context.read<UserProvider>().setPlatforms(plataformsMap);
                 
                 },
                 style: ElevatedButton.styleFrom(
