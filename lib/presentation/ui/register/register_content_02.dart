@@ -49,21 +49,21 @@ class _RegisterContent02State extends State<RegisterContent02> {
     super.dispose();
   }
 
+  Map<String, dynamic> plataformsMap = {
+    "Computer": false,
+    "PS3": false,
+    "PS4": false,
+    "PS5": false,
+    "X360": false,
+    "XONE": false,
+    "XONE-S": false,
+    "Switch": false
+  };
+
+
 
   @override
   Widget build(BuildContext context) {
-
-    List<String> plataformsTitles = [
-      "Computer",
-      "PS3",
-      "PS4",
-      "PS5",
-      "X360"
-      "XONE",
-      "XONE-S",
-      "Switch"
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,8 +90,7 @@ class _RegisterContent02State extends State<RegisterContent02> {
         SizedBox(height: 10,),
         Expanded(
           child: GridView.builder(
-            itemCount: plataformsTitles.length,
-            physics: NeverScrollableScrollPhysics(),
+            itemCount: plataformsMap.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               crossAxisSpacing: 5,
@@ -100,17 +99,33 @@ class _RegisterContent02State extends State<RegisterContent02> {
             ), 
             itemBuilder: (context, index) {
               return OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+
+                  setState(() {
+                    if (plataformsMap[plataformsMap.keys.elementAt(index)] == true) {
+                      plataformsMap[plataformsMap.keys.elementAt(index)] = false;
+                    } else {
+                      plataformsMap[plataformsMap.keys.elementAt(index)] = true;
+                    }
+                  });
+                
+                },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black
+                  backgroundColor: plataformsMap.values.elementAt(index) == true ? Colors.amber : Colors.white,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100)
+                  ),
                 ),
-                child: Text(plataformsTitles[index])
+                child: Text(plataformsMap.keys.elementAt(index))
               );
             }),
         ),
         Center(
           child: ElevatedButtonWidget(
-            onPressed: () {}, 
+            onPressed: () {
+              
+            }, 
             child: Text("Create account", style: TextStyle(color: Colors.white),)
           ),
         ),
