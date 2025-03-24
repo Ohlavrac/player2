@@ -148,6 +148,9 @@ class _RegisterContent02State extends State<RegisterContent02> {
                 );
 
                 context.read<AuthProvider>().registerUser(newUser);
+
+                context.read<UserProvider>().cleanUserProdiver();
+                context.read<UserProvider>().resetAllStatus();
               } else {
                 setState(() {
                   context.read<UserProvider>().verifyFields(["platforms"]);

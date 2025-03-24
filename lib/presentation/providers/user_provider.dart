@@ -125,6 +125,29 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void cleanUserProdiver() {
+    email = "";
+    password = "";
+    username = "";
+    description = "";
+    imageUrl = "";
+    platforms = [];
+    discord = "";
+    postsIds = [];
+    bday = DateTime.now();
+    userCreatedAt = DateTime.now();
+    notifyListeners();
+  }
+
+  void resetAllStatus() {
+    usernameStatus = UsernameStatus.unknow;
+    emailStatus = EmailStatus.unknow;
+    passwordStatus = PasswordStatus.unknow;
+    bdayStatus = BdayStatus.unknow;
+    plataformsStatus = PlataformsStatus.unknow;
+    notifyListeners();
+  }
+
   //VERIFY A GROUP OF FIELDS PASS BY PARAM
   void verifyFields(List<String> fields) {
     for (int c = 0; c < fields.length; c++) {
