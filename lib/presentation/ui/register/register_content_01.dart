@@ -149,7 +149,7 @@ class _RegisterContent01State extends State<RegisterContent01> {
               ),
               child: Text(selectedDate == null ? "Date" : "${selectedDate!.month}/${selectedDate!.day}/${selectedDate!.year}")
             ),
-            context.read<UserProvider>().bdayStatus == BdayStatus.invalid ? Text("Idade invalida", style: TextStyle(color: Colors.red, fontSize: 14),) : Container(),
+            context.read<UserProvider>().bdayStatus == BdayStatus.invalid ? Text("Invalid age", style: TextStyle(color: Colors.red, fontSize: 14),) : Container(),
             SizedBox(height: 30,),
             Center(child: ElevatedButtonWidget(
               onPressed: () {
@@ -159,8 +159,11 @@ class _RegisterContent01State extends State<RegisterContent01> {
                     context.read<UserProvider>().bdayStatus == BdayStatus.valid) {
                   Navigator.pushNamed(context, "/register/informations");
                 } else {
-                  print("PERA LA CAMARAD");
-                  print("${context.read<UserProvider>().getusername} | ${context.read<UserProvider>().getemail} | ${context.read<UserProvider>().getpassword}");
+
+                  setState(() {
+                    context.read<UserProvider>().verifyFields(["email", "password", "username", "bday"]);
+                  });
+
                 }
               }, 
               child: Text("Register", style: TextStyle(color: Colors.white),)

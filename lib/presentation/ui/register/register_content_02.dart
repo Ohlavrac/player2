@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:player2/domain/entities/user_entity.dart';
+import 'package:player2/presentation/providers/auth_provider.dart';
 import 'package:player2/presentation/status/plataforms_status.dart';
 import 'package:player2/presentation/widgets/elevated_button_widget.dart';
 import 'package:player2/presentation/widgets/text_input_v1_widget.dart';
@@ -60,8 +62,6 @@ class _RegisterContent02State extends State<RegisterContent02> {
     "XONE-S": false,
     "Switch": false
   };
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,24 @@ class _RegisterContent02State extends State<RegisterContent02> {
         Center(
           child: ElevatedButtonWidget(
             onPressed: () {
-              
+              if (context.read<UserProvider>().plataformsStatus == PlataformsStatus.valid) {
+                
+                UserEntity newUser = UserEntity(
+                  username: context.read<UserProvider>().username,
+                  email: context.read<UserProvider>().email,
+                  password: context.read<UserProvider>().password,
+                  bday: context.read<UserProvider>().bday,
+                  description: context.read<UserProvider>().description,
+                  discord: context.read<UserProvider>().discord,
+                  platforms: context.read<UserProvider>().platforms,
+                );
+
+                context.read<AuthProvider>().registerUser(newUser);
+              } else {
+                setState(() {
+                  context.read<UserProvider>().verifyFields(["platforms"]);
+                });
+              }
             }, 
             child: Text("Create account", style: TextStyle(color: Colors.white),)
           ),
