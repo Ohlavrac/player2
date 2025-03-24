@@ -32,7 +32,7 @@ class _TextInputV1WidgetState extends State<TextInputV1Widget> {
                 isVisible ? isVisible = false : isVisible = true;
               });
             }, 
-            icon: Icon(Icons.remove_red_eye)
+            icon: Icon(isVisible ? Icons.visibility_off : Icons.visibility)
           ) : 
           null,
         errorText: widget.erroText,
