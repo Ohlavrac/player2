@@ -174,7 +174,9 @@ class _RegisterContent01State extends State<RegisterContent01> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Already hava account ?", style: TextStyle(fontSize: 16),),
-                  TextButton(onPressed: () {}, child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),))
+                  TextButton(onPressed: () {
+                    Navigator.pushNamed(context, "/login");
+                  }, child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),))
                 ],
               ),
             ]
