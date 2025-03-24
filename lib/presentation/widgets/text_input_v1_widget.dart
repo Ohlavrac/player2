@@ -36,7 +36,7 @@ class _TextInputV1WidgetState extends State<TextInputV1Widget> {
           ) : 
           null,
         errorText: widget.erroText,
-        
+        errorStyle: TextStyle(color: Colors.red)
       ),
     );
   }
