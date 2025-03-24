@@ -124,4 +124,36 @@ class UserProvider extends ChangeNotifier {
     userCreatedAt = value;
     notifyListeners();
   }
+
+  //VERIFY A GROUP OF FIELDS PASS BY PARAM
+  void verifyFields(List<String> fields) {
+    for (int c = 0; c < fields.length; c++) {
+      switch (fields[c]) {
+        case "email":
+          email.isEmpty ? emailStatus = EmailStatus.invalid : null;
+          continue;
+        case "password":
+          password.isEmpty ? passwordStatus = PasswordStatus.short : null;
+          continue;
+        case "username":
+          username.isEmpty ? usernameStatus = UsernameStatus.invalid : null;
+          continue;
+        case "description":
+          //description.isEmpty ? descriptionStatus = DescriptionStatus.invalid : null;
+          continue;
+        case "imageUrl":
+          continue;
+        case "discord":
+          continue;
+        case "platforms":
+          platforms.isEmpty ? plataformsStatus = PlataformsStatus.invalid: null;
+          continue;
+        case "bday":
+          bday.year == DateTime.now().year || bday.year.isNaN ? bdayStatus = BdayStatus.invalid : null;
+          continue;
+        default:
+          break;
+      }
+    }
+  }
 }
