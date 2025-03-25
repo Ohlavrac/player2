@@ -1,0 +1,1 @@
+enum PlataformsStatus {valid, invalid, unknow}

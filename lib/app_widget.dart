@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
+import 'package:player2/presentation/ui/login/login_page.dart';
 import 'package:player2/presentation/ui/register/register_page.dart';
 import 'package:player2/presentation/ui/register/register_page_2.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class AppWidget extends StatelessWidget {
         initialRoute: "/register",
         routes: {
           "/": (context) => MainScreen(),
+          "/login": (context) => LoginPage(),
           "/register": (context) => RegisterPage(),
           "/register/informations": (context) => RegisterPage2()
         },

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:player2/presentation/status/bday_status.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/password_status.dart';
+import 'package:player2/presentation/status/plataforms_status.dart';
 import 'package:player2/presentation/status/username_status.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -18,6 +20,8 @@ class UserProvider extends ChangeNotifier {
   UsernameStatus usernameStatus = UsernameStatus.unknow;
   EmailStatus emailStatus = EmailStatus.unknow;
   PasswordStatus passwordStatus = PasswordStatus.unknow;
+  BdayStatus bdayStatus = BdayStatus.unknow;
+  PlataformsStatus plataformsStatus = PlataformsStatus.unknow;
 
   String get getemail => email;
   String get getpassword => password; 
@@ -74,8 +78,22 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPlatforms(List<String> value) {
-    platforms = value;
+  void setPlatforms(Map<String, dynamic> value) {
+    
+    if (value.containsValue(true)) {
+      platforms.clear();
+      value.forEach((key, value) {
+        if (value == true && !platforms.contains(key)) {
+          platforms.add(key);
+        }
+      });
+      plataformsStatus = PlataformsStatus.valid;
+    } else {
+      print("EPA");
+      plataformsStatus = PlataformsStatus.invalid;
+    }
+
+
     notifyListeners();
   }
 
@@ -90,12 +108,75 @@ class UserProvider extends ChangeNotifier {
   }
 
   void setBday(DateTime value) {
-    bday = value;
+    int currentAge = DateTime.now().year - value.year;
+
+    if (value == null || currentAge < 18) {
+      bdayStatus = BdayStatus.invalid;
+    } else {
+      bday = value;
+      bdayStatus = BdayStatus.valid;
+    }
+    print(bdayStatus);
     notifyListeners();
   }
 
   void setUserCreatedAt(DateTime value) {
     userCreatedAt = value;
     notifyListeners();
+  }
+
+  void cleanUserProdiver() {
+    email = "";
+    password = "";
+    username = "";
+    description = "";
+    imageUrl = "";
+    platforms = [];
+    discord = "";
+    postsIds = [];
+    bday = DateTime.now();
+    userCreatedAt = DateTime.now();
+    notifyListeners();
+  }
+
+  void resetAllStatus() {
+    usernameStatus = UsernameStatus.unknow;
+    emailStatus = EmailStatus.unknow;
+    passwordStatus = PasswordStatus.unknow;
+    bdayStatus = BdayStatus.unknow;
+    plataformsStatus = PlataformsStatus.unknow;
+    notifyListeners();
+  }
+
+  //VERIFY A GROUP OF FIELDS PASS BY PARAM
+  void verifyFields(List<String> fields) {
+    for (int c = 0; c < fields.length; c++) {
+      switch (fields[c]) {
+        case "email":
+          email.isEmpty ? emailStatus = EmailStatus.invalid : null;
+          continue;
+        case "password":
+          password.isEmpty ? passwordStatus = PasswordStatus.short : null;
+          continue;
+        case "username":
+          username.isEmpty ? usernameStatus = UsernameStatus.invalid : null;
+          continue;
+        case "description":
+          //description.isEmpty ? descriptionStatus = DescriptionStatus.invalid : null;
+          continue;
+        case "imageUrl":
+          continue;
+        case "discord":
+          continue;
+        case "platforms":
+          platforms.isEmpty ? plataformsStatus = PlataformsStatus.invalid: null;
+          continue;
+        case "bday":
+          bday.year == DateTime.now().year || bday.year.isNaN ? bdayStatus = BdayStatus.invalid : null;
+          continue;
+        default:
+          break;
+      }
+    }
   }
 }

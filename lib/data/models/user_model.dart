@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:player2/domain/entities/user_entity.dart';
 
 class UserModel {
-  final int? id;
+  final String? id;
   final String? email;
   final String? password;
   final String? username;
@@ -29,6 +30,14 @@ class UserModel {
 
 
   //from firebase data (auth)
+  factory UserModel.fromFirebaseAuth(firebase_auth.User firebase) {
+    return UserModel(
+      id: firebase.uid,
+      email: firebase.email,
+      username: firebase.displayName,
+      imageUrl: firebase.photoURL,
+    );
+  }
 
 
   //from another data source (api)

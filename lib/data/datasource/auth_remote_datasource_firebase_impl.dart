@@ -34,7 +34,7 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
         "discord": usermodel.discord,
         "posts_ids": usermodel.postsIds,
         "b_day": usermodel.bday,
-        "user_created_at": usermodel.userCreatedAt
+        "user_created_at": DateTime.now()
       };
 
       firebaseDB.collection("users").add(userData).then((DocumentReference doc) => print("Document added with ID: $doc"));
@@ -43,7 +43,6 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
       throw Exception("Erro while create a user: $error");
     }
 
-    // TODO: implement createNewUser
-    throw UnimplementedError();
+    return usermodel;
   }
 }

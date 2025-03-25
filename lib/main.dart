@@ -24,5 +24,3 @@ void main() async {
     authRepository: authRepository,
   ));
 }
-
-//dar uma olhada nesse bagulho

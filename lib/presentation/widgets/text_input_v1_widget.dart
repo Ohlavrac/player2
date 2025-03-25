@@ -6,8 +6,9 @@ class TextInputV1Widget extends StatefulWidget {
   final Function(String)? onChanged;
   final bool isPasswordInput;
   final bool isEmailInput;
+  final int? maxLines;
 
-  const TextInputV1Widget({super.key, required this.textController, this.erroText, this.onChanged, required this.isPasswordInput, required this.isEmailInput});
+  const TextInputV1Widget({super.key, required this.textController, this.erroText, this.onChanged, required this.isPasswordInput, required this.isEmailInput, this.maxLines});
 
   @override
   State<TextInputV1Widget> createState() => _TextInputV1WidgetState();
@@ -21,6 +22,7 @@ class _TextInputV1WidgetState extends State<TextInputV1Widget> {
     return TextFormField(
       controller: widget.textController,
       onChanged: widget.onChanged,
+      maxLines: widget.maxLines ?? 1,
       obscureText: widget.isPasswordInput ? isVisible : false,
       decoration: InputDecoration(
         suffixIcon: widget.isPasswordInput ? 
@@ -30,11 +32,11 @@ class _TextInputV1WidgetState extends State<TextInputV1Widget> {
                 isVisible ? isVisible = false : isVisible = true;
               });
             }, 
-            icon: Icon(Icons.remove_red_eye)
+            icon: Icon(isVisible ? Icons.visibility_off : Icons.visibility)
           ) : 
           null,
         errorText: widget.erroText,
-        
+        errorStyle: TextStyle(color: Colors.red)
       ),
     );
   }
