@@ -7,10 +7,12 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
 
   AuthRemoteDatasourceFirebaseImpl({
     firebase_auth.FirebaseAuth? firebaseAuth,
-  }) : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
+    FirebaseFirestore? firebaseFirestore,
+  }) : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+      _firebaseDB = firebaseFirestore ?? FirebaseFirestore.instance;
   
   final firebase_auth.FirebaseAuth _firebaseAuth;
-  final firebaseDB = FirebaseFirestore.instance;
+    final FirebaseFirestore _firebaseDB;
 
   @override
   Future<UserModel> createNewUser({required UserModel usermodel}) async {
@@ -37,7 +39,7 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
         "user_created_at": DateTime.now()
       };
 
-      firebaseDB.collection("users").add(userData).then((DocumentReference doc) => print("Document added with ID: $doc"));
+      await _firebaseDB.collection("users").add(userData).then((DocumentReference doc) => print("Document added with ID: $doc"));
 
     } catch (error) {
       throw Exception("Erro while create a user: $error");
