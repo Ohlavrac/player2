@@ -54,20 +54,21 @@ void main() {
   const discord = "testeDiscord";
   final bday = DateTime(2002, 9, 7, 17, 30);
 
+  UserModel fakeUser = UserModel(
+    email: email,
+    password: password,
+    username: username,
+    description: description,
+    imageUrl: imageUrl,
+    platforms: platforms,
+    discord: discord,
+    postsIds: [],
+    bday: bday,
+  );
+
   group("REGISTER USER TESTS", () {
 
     test("SHOULD RETURN USER MODEL SIMILAR TO USERFAKE WHEN REGISTER IS SUCCESSFUL", () async {
-      UserModel fakeUser = UserModel(
-        email: email,
-        password: password,
-        username: username,
-        description: description,
-        imageUrl: imageUrl,
-        platforms: platforms,
-        discord: discord,
-        postsIds: [],
-        bday: bday,
-      );
 
       when(
         mockFirebaseAuth.createUserWithEmailAndPassword(
@@ -87,6 +88,31 @@ void main() {
       verify(mockCollectionReference.add(any)).called(1);
 
       expect(result, equals(fakeUser));
+    });
+
+    test("SHOULD RETUR A EXCEPTION WHEN TRY REGISTER A NEW USER FAILS", () async {
+      when(mockFirebaseAuth.createUserWithEmailAndPassword(
+          email: anyNamed("email"),
+          password: anyNamed("password")
+        )).thenThrow(firebase_auth.FirebaseAuthException(code: 'email-already-in-use'));
+
+      // Act & Assert
+      expect(
+        () async => await authRemoteDatasourceFirebaseImpl.createNewUser(
+          usermodel: UserModel(
+            email: 'test@example.com',
+            password: 'password123',
+            username: 'testUser',
+            description: 'Test description',
+            imageUrl: 'https://example.com/image.jpg',
+            platforms: [],
+            discord: '',
+            postsIds: [],
+            bday: DateTime(2000, 1, 1),
+          ),
+        ),
+        throwsA(isA<Exception>()),
+      );
     });
   });
 }
