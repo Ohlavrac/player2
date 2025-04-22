@@ -68,8 +68,10 @@ class _LoginViewState extends State<LoginView> {
             Text("Welcome", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Back", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Player", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
-            SizedBox(height: 30,),
-            Text("Sign in with yout accound and find new people to player together", style: TextStyle(fontSize: 16),),
+            Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 10),
+              child: Text("Sign in with yout accound and find new people to player together", style: TextStyle(fontSize: 16),),
+            ),
             Divider(
               height: 3,
               color: Colors.black,
