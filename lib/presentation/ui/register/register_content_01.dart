@@ -176,7 +176,7 @@ class _RegisterContent01State extends State<RegisterContent01> {
                   Text("Already hava account ?", style: TextStyle(fontSize: 16),),
                   TextButton(onPressed: () {
                     Navigator.pushNamed(context, "/login");
-                  }, child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),))
+                  }, child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),))
                 ],
               ),
             ]
