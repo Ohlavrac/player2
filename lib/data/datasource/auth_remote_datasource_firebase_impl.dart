@@ -20,12 +20,14 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
     try {
       firebase_auth.UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: usermodel.email!,
-        password: usermodel.password!
-      ); 
+        password: usermodel.password!,
+      );
 
       if (userCredential.user == null) {
         throw Exception("Error registering new user");
       }
+
+      userCredential.user!.updateDisplayName(usermodel.username);
 
       Map<String, dynamic> userData = {
         "user_id": userCredential.user!.uid,
@@ -40,7 +42,6 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
       };
 
       await _firebaseDB.collection("users").add(userData).then((DocumentReference doc) => print("Document added with ID: $doc"));
-
     } catch (error) {
       throw Exception("Erro while create a user: $error");
     }
