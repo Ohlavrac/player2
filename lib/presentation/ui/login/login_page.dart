@@ -129,11 +129,11 @@ class _LoginViewState extends State<LoginView> {
               Center(
                 child: RichText(
                   text: TextSpan(
-                    text: "Need an account? ",
+                    text: "Need an account ? ",
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                     children: [
                       TextSpan(
-                        text: "Sign Up ->",
+                        text: " Sign Up ->",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),
                         recognizer: TapGestureRecognizer()..onTap = () => Navigator.pushNamed(context, "/register")
                       )
