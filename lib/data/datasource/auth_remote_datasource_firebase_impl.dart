@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:player2/data/datasource/auth_remote_datasource.dart';
+import 'package:player2/data/exceptions/firebase_custom_excetions.dart';
 import 'package:player2/data/models/user_model.dart';
 
 class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
@@ -47,5 +48,27 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
     }
 
     return usermodel;
+  }
+  
+  @override
+  Future<UserModel> loginWithEmailAndPassword({required String email, required String password}) async {
+    try {
+      final credential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+
+      return UserModel.fromFirebaseAuth(credential.user!);
+    } on FirebaseException catch (error) {
+      if (error.code == "user-not-found") {
+        throw FirebaseCustomExcetions("User not found: ${error.message}");
+      } else if (error.code == "wrong-password") {
+        throw FirebaseCustomExcetions("Wrong password: ${error.message}");
+      } else {
+        throw FirebaseCustomExcetions("Error: ${error.message}");
+      }
+    }
+  }
+  
+  @override
+  Future<void> logout() async {
+    await _firebaseAuth.signOut();
   }
 }

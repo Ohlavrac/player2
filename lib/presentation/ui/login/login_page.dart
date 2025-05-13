@@ -1,5 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:player2/domain/entities/user_entity.dart';
+import 'package:player2/domain/repositories/auth_repository.dart';
+import 'package:player2/domain/usecases/login_user_usecase.dart';
+import 'package:player2/presentation/providers/auth_login_provider.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/password_status.dart';
@@ -16,7 +20,10 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: LoginView(),
+        child: ChangeNotifierProvider(
+          create: (context) => AuthLoginProvider(loginUserUsecase: LoginUserUsecase(authRepository: context.read<AuthRepository>())),
+          child: LoginView()
+        ),
       ),
     );
   }
@@ -32,6 +39,9 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
+
+  bool hasError = false;
+  String erroMesage = "";
 
   @override
   void initState() {
@@ -121,7 +131,43 @@ class _LoginViewState extends State<LoginView> {
                 padding: const EdgeInsets.only(top: 10, bottom: 20),
                 child: Center(
                   child: ElevatedButtonWidget(
-                    onPressed: () {},
+                    onPressed: () async {
+                      UserEntity user = UserEntity(email: _emailController!.text, password: _passwordController!.text);
+
+                      try {
+                        await context.read<AuthLoginProvider>().login(user);
+                        showDialog(
+                          context: context, 
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("OK"),
+                              content: Text("OK", style: TextStyle(color: Colors.red),),
+                            );
+                          }
+                        );
+                      } catch (erro) {
+                        if (!context.mounted) return;
+                        showDialog(
+                          context: context, 
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Error"),
+                              content: Text(erro.toString(), style: TextStyle(color: Colors.red),),
+                            );
+                          }
+                        );
+                      }
+
+                      if (!context.mounted) return;
+
+                      context.read<UserProvider>().cleanUserProdiver();
+                      context.read<UserProvider>().resetAllStatus();
+                      hasError = false;
+                      erroMesage = "";
+                      setState(() {
+                        
+                      });
+                    },
                     child: Text("Login", style: TextStyle(color: Colors.white),)
                   ),
                 ),
