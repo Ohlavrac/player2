@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:player2/domain/entities/user_entity.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
+import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
 import 'package:player2/domain/usecases/login_user_usecase.dart';
 import 'package:player2/presentation/providers/auth_login_provider.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
@@ -20,8 +21,16 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: ChangeNotifierProvider(
-          create: (context) => AuthLoginProvider(loginUserUsecase: LoginUserUsecase(authRepository: context.read<AuthRepository>())),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => AuthLoginProvider(loginUserUsecase: LoginUserUsecase(authRepository: context.read<AuthRepository>())),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => UserProvider(getLoggedUserUscase: GetLoggedUserUscase(repository: context.read<AuthRepository>()))
+            )
+          ],
+          
           child: LoginView()
         ),
       ),
@@ -48,6 +57,7 @@ class _LoginViewState extends State<LoginView> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timestamp) {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.checkLoggedUser();
 
       _emailController = TextEditingController(text: userProvider.email);
       _passwordController = TextEditingController(text: userProvider.password);
@@ -61,6 +71,10 @@ class _LoginViewState extends State<LoginView> {
         final text = _passwordController == null ? "" : _passwordController!.text;
         userProvider.setPassword(text);
       });
+
+      if (userProvider.user != null) {
+        Navigator.pushNamed(context, "/");
+      }
 
       setState(() {
         
@@ -78,6 +92,15 @@ class _LoginViewState extends State<LoginView> {
             Text("Welcome", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Back", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Player", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
+            Consumer<UserProvider>(
+              builder: (_, provider, __) {
+                if (provider.user == null) {
+                  return Text("OFF");
+                } else {
+                  return Text("ON");
+                }
+              }
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 10),
               child: Text("Sign in with yout accound and find new people to player together", style: TextStyle(fontSize: 16),),
