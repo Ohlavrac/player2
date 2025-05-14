@@ -71,4 +71,16 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
   Future<void> logout() async {
     await _firebaseAuth.signOut();
   }
+  
+  @override
+  Future<UserModel?> getLoggedUser() async {
+    final user = _firebaseAuth.currentUser;
+
+    if (user == null) {
+      print("User not online");
+      return null;
+    }
+
+    return UserModel.fromFirebaseAuth(user);
+  }
 }

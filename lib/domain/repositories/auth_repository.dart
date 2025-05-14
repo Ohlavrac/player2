@@ -8,4 +8,6 @@ abstract class AuthRepository {
   Future<UserEntity> login({
     required UserEntity userEntity
   });
+
+  Future<UserEntity?> getLoggedUser();
 }

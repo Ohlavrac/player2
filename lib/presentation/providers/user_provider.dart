@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:player2/domain/entities/user_entity.dart';
+import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
 import 'package:player2/presentation/status/bday_status.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/password_status.dart';
@@ -6,6 +8,8 @@ import 'package:player2/presentation/status/plataforms_status.dart';
 import 'package:player2/presentation/status/username_status.dart';
 
 class UserProvider extends ChangeNotifier {
+  UserEntity? user;
+
   String email = "";
   String password = "";
   String username = "";
@@ -33,6 +37,17 @@ class UserProvider extends ChangeNotifier {
   List<int> get getpostsIds => postsIds;
   DateTime get getbday => bday;
   DateTime get getuserCreatedAt => userCreatedAt;
+
+  final GetLoggedUserUscase? getLoggedUserUscase;
+
+  UserProvider({
+    this.getLoggedUserUscase
+  });
+
+  Future<void> checkLoggedUser() async {
+    user = await getLoggedUserUscase!.call();
+    notifyListeners();
+  }
 
   void setEmail(String value) {
     if (value.contains(RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com(\.br)?$'))) {
