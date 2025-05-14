@@ -13,8 +13,21 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/text_input_v1_widget.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late AuthLoginProvider _authLoginProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _authLoginProvider = AuthLoginProvider(loginUserUsecase: LoginUserUsecase(authRepository: context.read<AuthRepository>()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +36,7 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: MultiProvider(
           providers: [
-            ChangeNotifierProvider(
-              create: (context) => AuthLoginProvider(loginUserUsecase: LoginUserUsecase(authRepository: context.read<AuthRepository>())),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => UserProvider(getLoggedUserUscase: GetLoggedUserUscase(repository: context.read<AuthRepository>()))
-            )
+            ChangeNotifierProvider.value(value: _authLoginProvider),
           ],
           
           child: LoginView()
@@ -56,8 +64,13 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timestamp) {
-      var userProvider = Provider.of<UserProvider>(context, listen: false);
-        userProvider.checkLoggedUser();
+      var userProvider = context.read<UserProvider>();
+
+      userProvider.checkLoggedUser();
+      
+      if (userProvider.user != null) {
+        Navigator.pushReplacementNamed(context, "/");
+      }
 
       _emailController = TextEditingController(text: userProvider.email);
       _passwordController = TextEditingController(text: userProvider.password);
@@ -71,10 +84,6 @@ class _LoginViewState extends State<LoginView> {
         final text = _passwordController == null ? "" : _passwordController!.text;
         userProvider.setPassword(text);
       });
-
-      if (userProvider.user != null) {
-        Navigator.pushNamed(context, "/");
-      }
 
       setState(() {
         
@@ -92,15 +101,15 @@ class _LoginViewState extends State<LoginView> {
             Text("Welcome", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Back", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Player", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
-            Consumer<UserProvider>(
-              builder: (_, provider, __) {
+            /*Consumer<UserProvider>(
+              builder: (context, provider, __) {
                 if (provider.user == null) {
                   return Text("OFF");
                 } else {
-                  return Text("ON");
+                  return Text("ON: ${provider.user!.email}");
                 }
               }
-            ),
+            ),*/
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 10),
               child: Text("Sign in with yout accound and find new people to player together", style: TextStyle(fontSize: 16),),
@@ -156,7 +165,7 @@ class _LoginViewState extends State<LoginView> {
                   child: ElevatedButtonWidget(
                     onPressed: () async {
                       UserEntity user = UserEntity(email: _emailController!.text, password: _passwordController!.text);
-
+    
                       try {
                         await context.read<AuthLoginProvider>().login(user);
                         showDialog(
@@ -180,9 +189,9 @@ class _LoginViewState extends State<LoginView> {
                           }
                         );
                       }
-
+    
                       if (!context.mounted) return;
-
+    
                       context.read<UserProvider>().cleanUserProdiver();
                       context.read<UserProvider>().resetAllStatus();
                       hasError = false;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
+import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
 import 'package:player2/presentation/ui/home/home_page.dart';
 import 'package:player2/presentation/ui/login/login_page.dart';
 import 'package:player2/presentation/ui/register/register_completed_page.dart';
@@ -20,7 +21,7 @@ class AppWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider.value(value: authRepository),
-        ChangeNotifierProvider(create: (context) => UserProvider(),),
+        ChangeNotifierProvider(create: (context) => UserProvider(getLoggedUserUscase: GetLoggedUserUscase(repository: authRepository)),),
       ],
       child: MaterialApp(
         initialRoute: "/login",

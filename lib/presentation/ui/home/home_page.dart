@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:player2/domain/entities/user_entity.dart';
-import 'package:player2/domain/repositories/auth_repository.dart';
-import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider(getLoggedUserUscase: GetLoggedUserUscase(repository: context.read<AuthRepository>())))
-      ],
-      child: HomeView()
-    );
+    return HomeView();
   }
 }
 
