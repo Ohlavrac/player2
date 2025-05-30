@@ -12,10 +12,10 @@ void main() {
   const platforms = ["computer", "PS5"];
   const discord = "testeDiscord";
   const postsIds = [1, 2, 3];
-  const bday = DateTime;
-  const userCreatedAt = DateTime;
+  final bday = DateTime(2002, 9, 7, 17, 30);
+  final userCreatedAt = DateTime.now();
 
-  const userModel = UserModel(
+  var userModel = UserModel(
     id: id,
     email: email,
     password: password,
@@ -25,8 +25,8 @@ void main() {
     platforms: platforms,
     discord: discord,
     postsIds: postsIds,
-    //bday: bday,
-    //suserCreatedAt: userCreatedAt
+    bday: bday,
+    userCreatedAt: userCreatedAt
   );
 
   group("UserModelTests", () {

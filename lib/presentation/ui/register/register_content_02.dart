@@ -148,7 +148,9 @@ class _RegisterContent02State extends State<RegisterContent02> {
                     platforms: context.read<UserProvider>().platforms,
                   );
       
-                  context.read<AuthProvider>().registerUser(newUser);
+                  context.read<AuthProvider>().registerUser(newUser).whenComplete(() {
+                    Navigator.pushNamed(context, "/register/completed");
+                  });
       
                   context.read<UserProvider>().cleanUserProdiver();
                   context.read<UserProvider>().resetAllStatus();

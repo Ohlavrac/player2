@@ -19,5 +19,19 @@ class AuthRepositoryImpl implements AuthRepository {
     //FICAR ATENTO AQUI
     return user.toEntity();
   }
+  
+  @override
+  Future<UserEntity> login({required UserEntity userEntity}) async {
+    UserModel userModel = UserMapper().fromEntity(userEntity);
+    final user = await authRemoteDatasource.loginWithEmailAndPassword(email: userModel.email!, password: userModel.password!);
+
+    return user.toEntity();
+  }
+  
+  @override
+  Future<UserEntity?> getLoggedUser() async {
+    UserModel? user = await authRemoteDatasource.getLoggedUser();
+    return user?.toEntity();
+  }
 
 }
