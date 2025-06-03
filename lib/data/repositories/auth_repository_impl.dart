@@ -33,5 +33,10 @@ class AuthRepositoryImpl implements AuthRepository {
     UserModel? user = await authRemoteDatasource.getLoggedUser();
     return user?.toEntity();
   }
+  
+  @override
+  Future<void> logout() async {
+    await authRemoteDatasource.logout();
+  }
 
 }

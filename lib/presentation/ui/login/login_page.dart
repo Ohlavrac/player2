@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:player2/domain/entities/user_entity.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
-import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
 import 'package:player2/domain/usecases/login_user_usecase.dart';
 import 'package:player2/presentation/providers/auth_login_provider.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
@@ -168,15 +167,7 @@ class _LoginViewState extends State<LoginView> {
     
                       try {
                         await context.read<AuthLoginProvider>().login(user);
-                        showDialog(
-                          context: context, 
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text("OK"),
-                              content: Text("OK", style: TextStyle(color: Colors.red),),
-                            );
-                          }
-                        );
+                        Navigator.pushNamed(context, "/");
                       } catch (erro) {
                         if (!context.mounted) return;
                         showDialog(

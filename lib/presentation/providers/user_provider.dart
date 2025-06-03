@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:player2/domain/entities/user_entity.dart';
 import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
+import 'package:player2/domain/usecases/logout_usecase.dart';
 import 'package:player2/presentation/status/bday_status.dart';
 import 'package:player2/presentation/status/email_status.dart';
 import 'package:player2/presentation/status/password_status.dart';
@@ -39,13 +40,20 @@ class UserProvider extends ChangeNotifier {
   DateTime get getuserCreatedAt => userCreatedAt;
 
   final GetLoggedUserUscase? getLoggedUserUscase;
+  final LogoutUsecase logoutUsecase;
 
   UserProvider({
-    this.getLoggedUserUscase
+    this.getLoggedUserUscase,
+    required this.logoutUsecase
   });
 
   Future<void> checkLoggedUser() async {
     user = await getLoggedUserUscase!.call();
+    notifyListeners();
+  }
+
+  Future<void> logoutUser() async {
+    await logoutUsecase.call();
     notifyListeners();
   }
 
@@ -125,7 +133,7 @@ class UserProvider extends ChangeNotifier {
   void setBday(DateTime value) {
     int currentAge = DateTime.now().year - value.year;
 
-    if (value == null || currentAge < 18) {
+    if (currentAge < 18) {
       bdayStatus = BdayStatus.invalid;
     } else {
       bday = value;
@@ -194,4 +202,6 @@ class UserProvider extends ChangeNotifier {
       }
     }
   }
+
+
 }
