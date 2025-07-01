@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:player2/domain/entities/user_entity.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
-import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
 import 'package:player2/domain/usecases/login_user_usecase.dart';
 import 'package:player2/presentation/providers/auth_login_provider.dart';
 import 'package:player2/presentation/providers/user_provider.dart';
@@ -66,12 +65,6 @@ class _LoginViewState extends State<LoginView> {
     WidgetsBinding.instance.addPostFrameCallback((timestamp) {
       var userProvider = context.read<UserProvider>();
 
-      userProvider.checkLoggedUser();
-      
-      if (userProvider.user != null) {
-        Navigator.pushReplacementNamed(context, "/");
-      }
-
       _emailController = TextEditingController(text: userProvider.email);
       _passwordController = TextEditingController(text: userProvider.password);
 
@@ -101,15 +94,6 @@ class _LoginViewState extends State<LoginView> {
             Text("Welcome", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Back", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Player", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
-            /*Consumer<UserProvider>(
-              builder: (context, provider, __) {
-                if (provider.user == null) {
-                  return Text("OFF");
-                } else {
-                  return Text("ON: ${provider.user!.email}");
-                }
-              }
-            ),*/
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 10),
               child: Text("Sign in with yout accound and find new people to player together", style: TextStyle(fontSize: 16),),
@@ -168,15 +152,7 @@ class _LoginViewState extends State<LoginView> {
     
                       try {
                         await context.read<AuthLoginProvider>().login(user);
-                        showDialog(
-                          context: context, 
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text("OK"),
-                              content: Text("OK", style: TextStyle(color: Colors.red),),
-                            );
-                          }
-                        );
+                        Navigator.pushNamed(context, "/");
                       } catch (erro) {
                         if (!context.mounted) return;
                         showDialog(

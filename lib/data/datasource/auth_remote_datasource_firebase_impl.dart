@@ -83,4 +83,9 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
 
     return UserModel.fromFirebaseAuth(user);
   }
+  
+  @override
+  Stream<firebase_auth.User?> authStateChanges() async* {
+    yield* _firebaseAuth.authStateChanges();
+  }
 }

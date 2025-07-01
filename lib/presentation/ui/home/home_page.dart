@@ -25,31 +25,31 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      var userProvider = context.read<UserProvider>();
-
-      if (userProvider.user == null) {
-        Navigator.pushReplacementNamed(context, "/login");
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    UserEntity? userInfos = context.read<UserProvider>().user;
+    var provider = context.read<UserProvider>();
+    //provider.getLoggedUser();
+    UserEntity? userInfos = context.watch<UserProvider>().user;
     
     return Scaffold(
-      body: Column(
-        children: [
-          Text("SALVE CARA $userInfos"),
-          ElevatedButton(
-            onPressed: () {}, 
-            child: Text("Logout")
-          )
-        ],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("SALVE CARA ${userInfos?.email}"),
+              ElevatedButton(
+                onPressed: () {
+                  provider.logoutUser();
+                  Navigator.pushReplacementNamed(context, "/login");
+                }, 
+                child: Text("Logout")
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
