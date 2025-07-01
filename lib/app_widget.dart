@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:player2/domain/repositories/auth_repository.dart';
+import 'package:player2/domain/usecases/auth_state_changes_usecase.dart';
 import 'package:player2/domain/usecases/get_logged_user_uscase.dart';
 import 'package:player2/domain/usecases/logout_usecase.dart';
-import 'package:player2/presentation/ui/home/home_page.dart';
+import 'package:player2/domain/usecases/register_user_usecase.dart';
+import 'package:player2/presentation/providers/auth_provider.dart';
+import 'package:player2/presentation/ui/auth_wrapper/auth_wrapper.dart';
 import 'package:player2/presentation/ui/login/login_page.dart';
 import 'package:player2/presentation/ui/register/register_completed_page.dart';
 import 'package:player2/presentation/ui/register/register_page.dart';
@@ -19,6 +22,8 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    //TODO POR O PROVIDER DE AUTH AQUI ?
+
     return MultiProvider(
       providers: [
         Provider.value(value: authRepository),
@@ -27,11 +32,14 @@ class AppWidget extends StatelessWidget {
           logoutUsecase: LogoutUsecase(repository: authRepository)
           
         ),),
+        ChangeNotifierProvider(create: (context) => AuthProvider(
+          registerUserUsecase: RegisterUserUsecase(repository: authRepository),
+          authStateChangesUsecase: AuthStateChangesUsecase(repository: authRepository)
+        ))
       ],
       child: MaterialApp(
-        initialRoute: "/login",
+        home: AuthWrapper(),
         routes: {
-          "/": (context) => HomePage(),
           "/login": (context) => LoginPage(),
           "/register": (context) => RegisterPage(),
           "/register/informations": (context) => RegisterPage2(),

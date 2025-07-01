@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:player2/domain/entities/user_entity.dart';
 
 abstract class AuthRepository {
@@ -12,4 +13,6 @@ abstract class AuthRepository {
   Future<UserEntity?> getLoggedUser();
 
   Future<void> logout();
+
+  Stream<User?> authStateChanges();
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:player2/data/datasource/auth_remote_datasource.dart';
 import 'package:player2/data/mappers/user_mapper.dart';
 import 'package:player2/data/models/user_model.dart';
@@ -37,6 +38,12 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> logout() async {
     await authRemoteDatasource.logout();
+  }
+
+  @override
+  Stream<User?> authStateChanges() async* {
+    var result = authRemoteDatasource.authStateChanges();
+    yield* result;
   }
 
 }
