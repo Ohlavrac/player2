@@ -152,7 +152,6 @@ class _LoginViewState extends State<LoginView> {
     
                       try {
                         await context.read<AuthLoginProvider>().login(user);
-                        context.read<UserProvider>().setUserLogged();
                         Navigator.pushNamed(context, "/");
                       } catch (erro) {
                         if (!context.mounted) return;
