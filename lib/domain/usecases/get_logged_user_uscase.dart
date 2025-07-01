@@ -9,7 +9,7 @@ class GetLoggedUserUscase  {
   });
 
 
-  Future<UserEntity?> call() {
-    return repository.getLoggedUser();
+  Future<UserEntity?> call() async {
+    return await repository.getLoggedUser();
   }
 }

@@ -28,8 +28,9 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    UserEntity? userInfos = context.read<UserProvider>().user;
     var provider = context.read<UserProvider>();
+    //provider.getLoggedUser();
+    UserEntity? userInfos = context.watch<UserProvider>().user;
     
     return Scaffold(
       body: SafeArea(
