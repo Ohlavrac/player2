@@ -47,7 +47,7 @@ class UserProvider extends ChangeNotifier {
     required this.logoutUsecase
   });
 
-  Future<void> checkLoggedUser() async {
+  Future<void> setUserLogged() async {
     user = await getLoggedUserUscase!.call();
     notifyListeners();
   }
