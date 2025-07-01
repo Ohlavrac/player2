@@ -25,17 +25,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      var userProvider = context.read<UserProvider>();
-
-      if (userProvider.user == null) {
-        Navigator.pushReplacementNamed(context, "/login");
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

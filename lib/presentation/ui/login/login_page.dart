@@ -65,12 +65,6 @@ class _LoginViewState extends State<LoginView> {
     WidgetsBinding.instance.addPostFrameCallback((timestamp) {
       var userProvider = context.read<UserProvider>();
 
-      userProvider.checkLoggedUser();
-      
-      if (userProvider.user != null) {
-        Navigator.pushReplacementNamed(context, "/");
-      }
-
       _emailController = TextEditingController(text: userProvider.email);
       _passwordController = TextEditingController(text: userProvider.password);
 
@@ -100,15 +94,6 @@ class _LoginViewState extends State<LoginView> {
             Text("Welcome", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Back", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
             Text("Player", style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),),
-            /*Consumer<UserProvider>(
-              builder: (context, provider, __) {
-                if (provider.user == null) {
-                  return Text("OFF");
-                } else {
-                  return Text("ON: ${provider.user!.email}");
-                }
-              }
-            ),*/
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 10),
               child: Text("Sign in with yout accound and find new people to player together", style: TextStyle(fontSize: 16),),
@@ -167,6 +152,7 @@ class _LoginViewState extends State<LoginView> {
     
                       try {
                         await context.read<AuthLoginProvider>().login(user);
+                        context.read<UserProvider>().setUserLogged();
                         Navigator.pushNamed(context, "/");
                       } catch (erro) {
                         if (!context.mounted) return;
