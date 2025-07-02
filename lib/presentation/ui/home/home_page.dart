@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     var provider = context.read<UserProvider>();
-    //provider.getLoggedUser();
+    provider.getLoggedUser();
     UserEntity? userInfos = context.watch<UserProvider>().user;
     
     return Scaffold(
@@ -40,6 +40,9 @@ class _HomeViewState extends State<HomeView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("SALVE CARA ${userInfos?.email}"),
+              Text("Username: ${userInfos?.username}"),
+              Text("Plataforms: ${userInfos?.platforms}"),
+              Text(">>> ${userInfos?.userCreatedAt}"),
               ElevatedButton(
                 onPressed: () {
                   provider.logoutUser();

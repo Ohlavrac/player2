@@ -74,14 +74,33 @@ class AuthRemoteDatasourceFirebaseImpl implements AuthRemoteDatasource {
   
   @override
   Future<UserModel?> getLoggedUser() async {
+    
     final user = _firebaseAuth.currentUser;
+    final userDataFromFireStore = await _firebaseDB.collection("users").where("user_id", isEqualTo: user?.uid).get();
+    final docs = userDataFromFireStore.docs;
 
     if (user == null) {
-      print("User not online");
       return null;
     }
 
-    return UserModel.fromFirebaseAuth(user);
+    final List<String>? plataforms = (docs.first["plataforms"] as List<dynamic>?)?.map((platform) => platform.toString()).toList();
+    final DateTime bday = (docs.first["b_day"] as Timestamp).toDate();
+    final DateTime createdAt = (docs.first["user_created_at"] as Timestamp).toDate();
+
+    UserModel userModel = UserModel(
+      id: user.uid,
+      email: user.email,
+      username: user.displayName,
+      imageUrl: user.photoURL,
+      description: userDataFromFireStore.docs.first["description"],
+      platforms: plataforms,
+      discord: userDataFromFireStore.docs.first["discord"],
+      postsIds: docs.first["posts_ids"],
+      bday: bday,
+      userCreatedAt: createdAt
+    );
+
+    return userModel;
   }
   
   @override
